@@ -1,0 +1,20 @@
+< Local Docker Environment - To Build the Image >
+docker build -t fs_nginx .
+
+< Local Docker Environment - To Run the Image in Docker Directly with volume "nginx" (files in host), with listening_port=8080, Note: nginx internal listening to port 80 >
+docker run -p 8080:80 fs_nginx
+
+< Local Docker Environment - To Run the Image in Docker Directly with copied files to docker image (files in image) , with listening_port=8080, Note: nginx internal listening to port 80 >
+docker run -p 8080:80 fs_nginx
+
+< Private Registry - To tag to harbor registry, with version tag "0.0.1" >
+docker tag fs_nginx harbor.fs-sep.org/alpine_amd64/fs_nginx:0.0.1
+
+<tag for STEE harbor>
+docker tag fs_nginx 10.8.0.1:30003/lta_lib/alpine_fs_nginx:1.1
+
+< Private Registry - To push to harbor registry, with version tag "0.0.1" >
+docker push harbor.fs-sep.org/alpine_amd64/fs_nginx:0.0.1
+
+<push to STEE harbor>
+docker push 10.8.0.1:30003/lta_lib/alpine_fs_nginx:1.1

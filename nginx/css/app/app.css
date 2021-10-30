@@ -1,0 +1,147 @@
+html, body {
+    height: 100%;
+}
+
+.container {
+  width: 100%;
+  border-width: thick;
+}
+
+.Body-Header {
+    min-height: 5vh;
+    width: 100%;
+    float: left;
+}
+
+.Body-Panel {
+  min-height: 90vh;
+  width: 25%;
+  float: left;
+  border: 0.5px solid #888;
+  border-radius: 5px;
+}
+
+.Body-Tab {
+    min-height: 90vh;
+    width: 75%;			
+    float: right;			
+    text-align:center;
+    border: 0.5px solid #888;
+    border-radius: 5px;
+  }
+
+.Body-Footer {
+    min-height: 5vh;
+    width: 100%;
+}
+
+.Body-Tab-Bus-Info-Map {
+    min-height: 40vh;
+    width: 80%;			
+    float: left;			
+    text-align:center;
+    border: 0.5px solid #888;
+    border-radius: 5px;
+  }
+  
+  .Body-Tab-Bus-Info-Animate {
+    min-height: 60vh;
+    width: 20%;			
+    float: right;			
+    text-align:center;
+    border: 0.5px solid #888;
+    border-radius: 5px;
+  }
+  
+/* Set the size of the div element that contains the map */
+#map {
+    display:block;
+    height: 60vh;   		/* The height is 400 pixels */
+    width: 80%;			/* The width is the width of the web page */
+    position:relative; 		/*so you dont lose the positioning of your text */
+    border: 20px solid #222;
+    border-radius: 30px;
+}
+
+.Body-Panel-SelectDevice {
+    border-radius: 5px;
+    border: 20px solid #222;
+    border-radius: 30px;
+}
+
+.Body-Panel-GenTxn {
+  border-radius: 5px;
+  border: 20px solid #222;
+  border-radius: 30px;
+}
+
+.buttonGenTxn {width: 100px;}
+
+.Body-Panel-DeviceStatus {
+    border-radius: 5px;
+    border: 20px solid #222;
+    border-radius: 30px;
+  }
+
+.image-led{
+    width: 10px;
+}
+
+.tab-content{
+    max-height: 85vh;
+    
+    overflow-y: auto;
+}
+
+.circle {
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  padding: 10px;
+  background: #65d700;
+  border: 3px solid #000;
+  color: #000;
+  text-align: center;
+  font: 24px Arial, sans-serif;
+}
+
+.title {
+  border: 1px solid whitesmoke;
+  border-collapse: collapse;
+  font-size: 24px;
+  color: orange;
+  display: block;
+}
+
+.usage {
+  border: 1px solid whitesmoke;
+  font-size: 16px;
+  display: block;
+  color: orange;
+  padding: 5px;
+}
+
+.usage td
+{
+    padding:0 15px;
+}
+
+table {
+  position: relative;
+  text-align: left;
+}
+
+.table.sticky th{
+   background-color: #222; 
+}
+
+thead th{
+  position: sticky;
+  top: 0;
+  background-color: #edecec;
+  z-index: 5;
+}
+
+#carddisplay { visibility: hidden; }
+
+

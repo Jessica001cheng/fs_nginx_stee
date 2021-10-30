@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Device Simulator GUI</title>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+
+	<!-- CSS -->
+	<script type="text/javascript" src="js/jquery/jquery-3.6.0.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/darkly/bootstrap.css" />
+	<link type="text/css" rel="stylesheet" href="css/app/app.css" />
+
+	<!-- Javascript -->
+	<script type="text/javascript" src="js/paho/mqttws31.js"></script>
+	<script type="text/javascript" src="js/app/app_google_map.js"></script>
+	<script type="text/javascript" src="js/app/app_mqtt_client.js"></script>
+	<script type="text/javascript" src="js/app/app_device.js"></script>
+	<script type="text/javascript" src="js/app/app_generate_transaction.js"></script>
+	<script type="text/javascript" src="js/app/justgauge.js"></script>
+	<script type="text/javascript" src="js/app/app_debug.js"></script>
+        <script type="text/javascript" src="js/app/app_send_message.js"></script>
+	<script src="js/justgage.js"></script>
+	<script src="js/raphael-2.1.4.min.js"></script>
+</head>
+
+<body onload="setDefault()">
+	<div class="container">
+		<div class="Body-Header">
+
+		</div>
+
+		<div class="Body-Panel">
+			<div class="Body-Panel-SelectDevice">
+				<h5>Please tap your card:</h5>
+                                <div class="container">
+                                        <h6>Tap at: </h6><input type="textbox" id="bcvname"></input>
+                                        <h6>Card Type:</h6><input type="textbox" id="cardtype"></input>
+                                        <h6>Card Number<input type="textbox" id="cardnumber"></input>
+                                </div>
+			</div>
+
+			<div class="Body-Panel-GenTxn">
+                                <h5>Card Tapped:</h5>
+				<div class="container">
+                                        <img width="203" height="270" src="/images/Bankcard_usage.png" id="carddisplay">
+				</div>
+			</div>
+
+			<div class="Body-Panel-DeviceStatus">
+                                <h5>Device Profiling:</h5>
+				<div class="container">
+                                        <button id="requestreply" style="background-color:lightblue" onclick="requesttripmgrreply()">Start Profile</button>
+                                        <p>Send request time:<span id="startprofileTime"></span></p>
+                                        <p>Receive reply time:<span id="receiveprofileTime"></span></p>
+				</div>			
+			</div>
+		</div>
+
+		<div class="Body-Tab">
+			<div class="navbar-default">
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+						<a class="nav-link active show" data-toggle="tab" href="#busInfo">Bus Info</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#parameter">Parameter</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#transaction">Transaction</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="tab" href="#debug">Debug</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane fade in active show" id="busInfo">
+
+						<div class="Body-Tab-Bus-Info-Map" id="map">
+							<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+							<script
+								src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyEFciEpcxIfzwPH6gAFH58rOHnvXBiWE&callback=initMap&libraries=&v=weekly"
+								async></script>
+						</div>
+						<div class="Body-Tab-Bus-Info-Animate">
+							<div class="container">
+								<table class="table table-hover">
+									<thead>
+									</thead>
+									<tbody>
+										<tr class="table-active">
+											<div id="panelDebug" style="display:none">
+												<p>Speed: <span id="mySpeed"></span></p>
+												<p>Bus Status: <span id="myStatus"></span></p>
+											</div>
+											<div id="gauge" class="200x160px"></div>
+										</tr>
+										<tr class="table-active">
+											<object id="svg-object" data="images/compass.svg" type="image/svg+xml" height="150" width="150"></object>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+                                                <div class="container" style="text-align: left;">
+							<h5>Bus Information</h5>
+							<table class="title">
+								<tr>
+									<th><span class="circle" id="busID"></th>
+									<th>&nbsp;&nbsp;Nearest Stop: <span id="stopID"></span>&nbsp;<span id="stopInfo"></span>&nbsp;&nbsp;</th>
+								</tr>
+							</table>
+							<p>Trip ID:&nbsp;<span id="tripID"></span>&nbsp;&nbsp;Direction:&nbsp;<span
+									id="dirID"></span>&nbsp;&nbsp;Shift Status: &nbsp;<span id="shiftID"></span>&nbsp;&nbsp;Door Status: &nbsp;<span id="doorStatus"></span></p>
+							<h5>Bus usage transactions (last bus stop):</h5>
+							<table class="usage">
+								<tr>
+									<td>CEPAS Boarded:</td>
+									<td><span id="cepasBoard"></span></td>
+									<td>CEPAS Alighted:</td>
+									<td><span id="cepasAlight"></span></td>
+								</tr>
+								<tr>
+									<td>Concession Boarded:</td>
+									<td><span id="concessionBoard"></span></td>
+									<td>Concession Alighted:</td>
+									<td><span id="concessionAlight"></span></td>
+								</tr>
+								<tr>
+									<td>Cash Boarded:</td>
+									<td><span id="cashBoard"></span></td>
+								</tr>
+							</table>
+						</div>
+
+					</div>
+					<div class="tab-pane fade in" id="parameter">
+						<div class>
+							<div class="container">
+								<table class="table sticky" id="parameter-table">
+									<thead>
+										<tr>
+											<th scope="col">S/N</th>
+											<th scope="col">State</th>
+											<th scope="col">File ID</th>
+											<th scope="col">Filename</th>
+											<th scope="col">Version</th>
+										</tr>
+									</thead>
+									<tbody>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade in" id="transaction">
+						<div class="container">
+							<table class="table sticky" id="transaction-table">
+								<thead>
+									<tr>
+										<th scope="col">S/N</th>
+										<th scope="col">Time</th>
+										<th scope="col">Transaction Type</th>
+									</tr>
+								</thead>
+								<tbody>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="tab-pane fade in" id="debug">
+						<div class="container">
+							<table class="table sticky" id="transaction-debug">
+								<thead>
+									<tr>
+										<th scope="col">S/N</th>
+										<th scope="col">Time</th>
+										<th scope="col">Topic</th>
+										<th scope="col">Message</th>
+									</tr>
+								</thead>
+								<tbody>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="Body-Footer">
+			<label for="debugCheck">Debug Info:</label>
+			<input type="checkbox" id="debugCheck" onclick="hideDebug()">
+			
+			<label for="debugCheck">Console Log:</label>
+			<input type="checkbox" id="consoleLog" onclick="consoleLog()">
+			
+			<button id="panelDebug" onclick="confirmclearDebug()">Clear all logs</button>
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+
+	</script>
+
+</body>
+
+</html>
