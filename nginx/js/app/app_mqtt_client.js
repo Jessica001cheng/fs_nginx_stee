@@ -1,6 +1,7 @@
 // Get the hostname, assume mqtt broker and web server are in the same host
-//var base_url = window.location.host; //Jessica comment for test
-var base_url = "10.8.0.7";
+var base_url = window.location.host; //Jessica comment for test
+console.log("mqtt url: " + base_url);
+//var base_url = "10.8.0.7";
 var pathArray = base_url.split(':');
 var base_host = pathArray[0];
 
@@ -562,44 +563,33 @@ function handlePatronUsageInfoData(msg) {
 }
 
 function handleCardInfoData(msg) {
+    cardtype = msg.card_info.card_type;
+    console.log(cardtype);
+    document.getElementById("cardtype").value = cardtype;
 
-    var path = window.location.pathname;
-    var page = path.split("/").pop();
-    console.log( page );
-    if(page === "login.html")
-    {
-        document.getElementById("login-correct-msg").visible = true;
-    }
-    else if(page === "index.html")
-    {
-        cardtype = msg.card_info.card_type;
-        console.log(cardtype);
-        document.getElementById("cardtype").value = cardtype;
+    cardnumber = msg.card_info.card_number;
+    document.getElementById("cardnumber").value = cardnumber;
 
-        cardnumber = msg.card_info.card_number;
-        document.getElementById("cardnumber").value = cardnumber;
+    bcvname = msg.device_Info.equipment_Id;
+    document.getElementById("bcvname").value = bcvname;
 
-        bcvname = msg.device_Info.equipment_Id;
-        document.getElementById("bcvname").value = bcvname;
+    document.getElementById('carddisplay').style.visibility='visible';
 
-        document.getElementById('carddisplay').style.visibility='visible';
-
-        if(cardtype == "CEPAS")
-            document.getElementById("carddisplay").src = "/images/Cepas_New_Ride.png";
-        else if(cardtype == "BANKCARD")
-            document.getElementById("carddisplay").src = "/images/Bankcard_usage.png";
-        else if(cardtype == "CEPAS TOKEN")
-            document.getElementById("carddisplay").src = "/images/CTC_usage.png";
-        else
-            document.getElementById('carddisplay').style.visibility='hidden';
-        setTimeout(function() {
-            console.log("timeout");
-            document.getElementById("cardtype").value = "";
-            document.getElementById("bcvname").value = "";
-            document.getElementById("cardnumber").value = "";
-            document.getElementById('carddisplay').style.visibility='hidden';
-         }, 3000);
-    }
+    if(cardtype == "CEPAS")
+        document.getElementById("carddisplay").src = "/images/Cepas_New_Ride.png";
+    else if(cardtype == "BANKCARD")
+        document.getElementById("carddisplay").src = "/images/Bankcard_usage.png";
+    else if(cardtype == "CEPAS TOKEN")
+        document.getElementById("carddisplay").src = "/images/CTC_usage.png";
+    else
+        document.getElementById('carddisplay').style.visibility='hidden';
+    setTimeout(function() {
+        console.log("timeout");
+        document.getElementById("cardtype").value = "";
+        document.getElementById("bcvname").value = "";
+        document.getElementById("cardnumber").value = "";
+        document.getElementById('carddisplay').style.visibility='hidden';
+     }, 3000);
 }
 
 
