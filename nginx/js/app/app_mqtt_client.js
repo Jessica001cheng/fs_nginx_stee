@@ -35,6 +35,8 @@ function onConnect() {
     client.subscribe("gnss_sim_bfc_bus_stop_info_msg")
     client.subscribe("trip_mgr_card_info_msg")
     client.subscribe("trip_mgr_app_msg")
+    requestTripInfo();
+    requestBusStopInfo();
 };
 
 function connect() {
@@ -73,14 +75,7 @@ var gaugeSpeedDef = {
     counter: true,
     relativeGaugeSize: true
 }
-$(function () {
-    gaugeObj = new JustGage({
-        id: "gauge",
-        titleFontColor: "white",
-        valueFontColor: "white",
-        defaults: gaugeSpeedDef
-    });
-})
+
 
 function changeStatus(statusName, ledFile) {
     document.getElementById(statusName).src = ledFile;
@@ -88,18 +83,18 @@ function changeStatus(statusName, ledFile) {
 }
 
 //sets the epoch time on the UI.
-var intervalTimer = window.setInterval(function(){
-    epoch = new Date().toLocaleString().replace(',', '');
+//var intervalTimer = window.setInterval(function(){
+//    epoch = new Date().toLocaleString().replace(',', '');
     
-    document.getElementById('startprofileTime').value = epoch;
-  }, 0);
+//    document.getElementById('startprofileTime').value = epoch;
+//  }, 0);
 
 function onMessageArrived(message) {
     // Debug - Print arrival of message to console
     if( true == g_consoleLog ) {
         console.log("!!!onMessageArrived: " + message.payloadString);
     }
-    
+    console.log("!!!onMessageArrived: " + message.payloadString);
     // Parse obj as json
     var msg = JSON.parse(message.payloadString);
 
@@ -152,6 +147,7 @@ function onMessageArrived(message) {
             handlePatronUsageInfoData(msg);
         }
         else if (msg.topic =="trip_mgr_card_info_msg") {
+            console.log("handleCardInfoData");
             handleCardInfoData(msg);
         }
         else if (msg.topic =="trip_mgr_app_msg") {
@@ -566,40 +562,85 @@ function handlePatronUsageInfoData(msg) {
 }
 
 function handleCardInfoData(msg) {
-    cardtype = msg.card_info.card_type;
-    console.log(cardtype);
-    document.getElementById("cardtype").value = cardtype;
 
-    cardnumber = msg.card_info.card_number;
-    document.getElementById("cardnumber").value = cardnumber;
+    var path = window.location.pathname;
+    var page = path.split("/").pop();
+    console.log( page );
+    if(page === "login.html")
+    {
+        document.getElementById("login-correct-msg").visible = true;
+    }
+    else if(page === "index.html")
+    {
+        cardtype = msg.card_info.card_type;
+        console.log(cardtype);
+        document.getElementById("cardtype").value = cardtype;
 
-    bcvname = msg.device_Info.equipment_Id;
-    document.getElementById("bcvname").value = bcvname;
+        cardnumber = msg.card_info.card_number;
+        document.getElementById("cardnumber").value = cardnumber;
 
-    document.getElementById('carddisplay').style.visibility='visible';
+        bcvname = msg.device_Info.equipment_Id;
+        document.getElementById("bcvname").value = bcvname;
 
-    if(cardtype == "CEPAS")
-        document.getElementById("carddisplay").src = "/images/Cepas_New_Ride.png";
-    else if(cardtype == "BANKCARD")
-        document.getElementById("carddisplay").src = "/images/Bankcard_usage.png";
-    else if(cardtype == "CEPAS TOKEN")
-        document.getElementById("carddisplay").src = "/images/CTC_usage.png";
-    else
-        document.getElementById('carddisplay').style.visibility='hidden';
-    setTimeout(function() {
-        console.log("timeout");
-        document.getElementById("cardtype").value = "";
-        document.getElementById("bcvname").value = "";
-        document.getElementById("cardnumber").value = "";
-        document.getElementById('carddisplay').style.visibility='hidden';
-     }, 3000);
+        document.getElementById('carddisplay').style.visibility='visible';
+
+        if(cardtype == "CEPAS")
+            document.getElementById("carddisplay").src = "/images/Cepas_New_Ride.png";
+        else if(cardtype == "BANKCARD")
+            document.getElementById("carddisplay").src = "/images/Bankcard_usage.png";
+        else if(cardtype == "CEPAS TOKEN")
+            document.getElementById("carddisplay").src = "/images/CTC_usage.png";
+        else
+            document.getElementById('carddisplay').style.visibility='hidden';
+        setTimeout(function() {
+            console.log("timeout");
+            document.getElementById("cardtype").value = "";
+            document.getElementById("bcvname").value = "";
+            document.getElementById("cardnumber").value = "";
+            document.getElementById('carddisplay').style.visibility='hidden';
+         }, 3000);
+    }
 }
 
 
 function handleTripManagerData(msg) {
-    var dateObj= new Date();
-    var dt = dateObj.toLocaleString('en-US', { hour12: false }).replace(',', '');
-    var millisec = dateObj.getMilliseconds();
-    document.getElementById("receiveprofileTime").innerHTML = dt+":"+millisec;
-    document.getElementById('requestreply').disabled = false;
+    msg_id = msg.payload.msg_id;
+    console.log( msg_id );
+    if(msg_id === websocket_app_msg_id_list.NO_RPLY)
+    {
+        var dateObj= new Date();
+        var dt = dateObj.toLocaleString('en-US', { hour12: false }).replace(',', '');
+        var millisec = dateObj.getMilliseconds();
+        document.getElementById("receiveprofileTime").innerHTML = dt+":"+millisec;
+        document.getElementById('requestreply').disabled = false;
+    }
+    else if(msg_id === websocket_app_msg_id_list.REQUEST_TRIP_INFO)
+    {
+        document.getElementById("service number").innerHTML =  msg.payload.service_number;
+        document.getElementById("bus plate").innerHTML =  msg.payload.busPlate;
+        document.getElementById("spid").innerHTML =  msg.payload.spid;
+        document.getElementById("direction").innerHTML =  msg.payload.direction;
+    }
+    else if(msg_id === websocket_app_msg_id_list.REQUEST_BUSSTOP_INFO)
+    {
+        document.getElementById("current stop ID").innerHTML =  msg.payload.current_stop_info.busStopID;
+        document.getElementById("current stop name").innerHTML =  msg.payload.current_stop_info.busStopName;
+        //document.getElementById("current stop expected time").innerHTML =  msg.payload.current_stop_info.busStopID;
+
+        document.getElementById("next stop ID").innerHTML =  msg.payload.current_stop_info.busStopID;
+        document.getElementById("next stop name").innerHTML =  msg.payload.current_stop_info.busStopName;
+        //document.getElementById("next stop expected time").innerHTML =  msg.payload.current_stop_info.busStopID;
+
+        document.getElementById("next next stop ID").innerHTML =  msg.payload.current_stop_info.busStopID;
+        document.getElementById("next next stop name").innerHTML =  msg.payload.current_stop_info.busStopName;
+        //document.getElementById("next next stop expected time").innerHTML =  msg.payload.current_stop_info.busStopID;
+
+        document.getElementById("destination stop ID").innerHTML =  msg.payload.destination_stop_info.busStopID;
+        document.getElementById("destination stop name").innerHTML =  msg.payload.destination_stop_info.busStopName;
+        //document.getElementById("destination stop expected time").innerHTML =  msg.payload.current_stop_info.busStopID;
+    }
+    else
+    {
+        console.log("unknown message received");
+    }
 }

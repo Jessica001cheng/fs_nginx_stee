@@ -26,7 +26,7 @@
 	<script src="js/raphael-2.1.4.min.js"></script>
 </head>
 
-<body onload="setDefault()">
+<body>
 	<div class="container">
 		<div class="Body-Header">
 
@@ -63,13 +63,13 @@
 			<div class="navbar-default">
 				<ul class="nav nav-tabs">
 					<li class="nav-item">
-						<a class="nav-link active show" data-toggle="tab" href="#busInfo">Bus Info</a>
+                                                <a class="nav-link active show" data-toggle="tab" href="#busInfo">MAIN</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#parameter">Parameter</a>
+                                                <a class="nav-link" data-toggle="tab" href="#parameter">FMS</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#transaction">Transaction</a>
+                                                <a class="nav-link" data-toggle="tab" href="#transaction">FARE</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" data-toggle="tab" href="#debug">Debug</a>
@@ -77,84 +77,75 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane fade in active show" id="busInfo">
-
-						<div class="Body-Tab-Bus-Info-Map" id="map">
-							<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-							<script
-								src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyEFciEpcxIfzwPH6gAFH58rOHnvXBiWE&callback=initMap&libraries=&v=weekly"
-								async></script>
-						</div>
-						<div class="Body-Tab-Bus-Info-Animate">
-							<div class="container">
-								<table class="table table-hover">
-									<thead>
-									</thead>
-									<tbody>
-										<tr class="table-active">
-											<div id="panelDebug" style="display:none">
-												<p>Speed: <span id="mySpeed"></span></p>
-												<p>Bus Status: <span id="myStatus"></span></p>
-											</div>
-											<div id="gauge" class="200x160px"></div>
-										</tr>
-										<tr class="table-active">
-											<object id="svg-object" data="images/compass.svg" type="image/svg+xml" height="150" width="150"></object>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
                                                 <div class="container" style="text-align: left;">
-							<h5>Bus Information</h5>
-							<table class="title">
-								<tr>
-									<th><span class="circle" id="busID"></th>
-									<th>&nbsp;&nbsp;Nearest Stop: <span id="stopID"></span>&nbsp;<span id="stopInfo"></span>&nbsp;&nbsp;</th>
-								</tr>
-							</table>
-							<p>Trip ID:&nbsp;<span id="tripID"></span>&nbsp;&nbsp;Direction:&nbsp;<span
-									id="dirID"></span>&nbsp;&nbsp;Shift Status: &nbsp;<span id="shiftID"></span>&nbsp;&nbsp;Door Status: &nbsp;<span id="doorStatus"></span></p>
-							<h5>Bus usage transactions (last bus stop):</h5>
+                                                    <table class="usage">
+                                                            <tr>
+                                                                    <td><span id="currentdate"></span></td>
+                                                                    <td><span id="currenttime"></span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                    <td><span id="service number"></span></td>
+                                                                    <td><span id="bus plate"></span></td>
+                                                                    <td><span id="spid"></span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                    <td><span id="direction"></span></td>
+                                                                    <td>KM:</td>
+                                                                    <td><span id="distance travalled"></span></td>
+                                                            </tr>
+                                                    </table>
 							<table class="usage">
 								<tr>
-									<td>CEPAS Boarded:</td>
-									<td><span id="cepasBoard"></span></td>
-									<td>CEPAS Alighted:</td>
-									<td><span id="cepasAlight"></span></td>
+                                                                    <td><span id="current stop ID"></span></td>
+                                                                    <td><span id="current stop name"></span></td>
+                                                                    <td><span id="current stop expected time"></span></td>
 								</tr>
 								<tr>
-									<td>Concession Boarded:</td>
-									<td><span id="concessionBoard"></span></td>
-									<td>Concession Alighted:</td>
-									<td><span id="concessionAlight"></span></td>
+                                                                    <td><span id="next stop ID"></span></td>
+                                                                    <td><span id="next stop name"></span></td>
+                                                                    <td><span id="next stop expected time"></span></td>
 								</tr>
 								<tr>
-									<td>Cash Boarded:</td>
-									<td><span id="cashBoard"></span></td>
+                                                                    <td><span id="next next stop ID"></span></td>
+                                                                    <td><span id="next next stop name"></span></td>
+                                                                    <td><span id="next next stop expected time"></span></td>
 								</tr>
+                                                                <tr>
+                                                                    <td><span id="destination stop ID"></span></td>
+                                                                    <td><span id="destination stop name"></span></td>
+                                                                    <td><span id="destination stop expected time"></span></td>
+                                                                </tr>
 							</table>
 						</div>
 
 					</div>
 					<div class="tab-pane fade in" id="parameter">
-						<div class>
-							<div class="container">
-								<table class="table sticky" id="parameter-table">
-									<thead>
-										<tr>
-											<th scope="col">S/N</th>
-											<th scope="col">State</th>
-											<th scope="col">File ID</th>
-											<th scope="col">Filename</th>
-											<th scope="col">Version</th>
-										</tr>
-									</thead>
-									<tbody>
-
-									</tbody>
-								</table>
-							</div>
-						</div>
+                                            <div class="Body-Tab-Bus-Info-Map" id="map">
+                                                    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+                                                    <script
+                                                            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCyEFciEpcxIfzwPH6gAFH58rOHnvXBiWE&callback=initMap&libraries=&v=weekly"
+                                                            async></script>
+                                            </div>
+                                            <div class="Body-Tab-Bus-Info-Animate">
+                                                    <div class="container">
+                                                            <table class="table table-hover">
+                                                                    <thead>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                            <tr class="table-active">
+                                                                                    <div id="panelDebug" style="display:none">
+                                                                                            <p>Speed: <span id="mySpeed"></span></p>
+                                                                                            <p>Bus Status: <span id="myStatus"></span></p>
+                                                                                    </div>
+                                                                                    <div id="gauge" class="200x160px"></div>
+                                                                            </tr>
+                                                                            <tr class="table-active">
+                                                                                    <object id="svg-object" data="images/compass.svg" type="image/svg+xml" height="150" width="150"></object>
+                                                                            </tr>
+                                                                    </tbody>
+                                                            </table>
+                                                    </div>
+                                            </div>
 					</div>
 					<div class="tab-pane fade in" id="transaction">
 						<div class="container">

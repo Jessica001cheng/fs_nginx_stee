@@ -1,4 +1,8 @@
-rowts = 1;
+const websocket_app_msg_id_list = {
+                                        NO_RPLY: "NO_PAYLOAD_REPLY",
+                                        REQUEST_TRIP_INFO: "REQUEST_TRIP_INFO",
+                                        REQUEST_BUSSTOP_INFO: "REQUEST_BUSSTOP_INFO"
+                                    }
 
 function seconds_since_epoch(d) { 
     return Math.floor( d / 1000 ); 
@@ -12,7 +16,31 @@ function requesttripmgrreply() {
 
     document.getElementById('requestreply').disabled = true;
 
-    var txn = genMsgObj("REQUEST_NO_PAYLOAD_REPLY");
+    var txn = genMsgObj(websocket_app_msg_id_list.NO_RPLY);
+    console.log(txn);
+    if(txn != null){
+        let jsonMsg = JSON.stringify(txn);
+        console.log(jsonMsg);
+
+        publish(txn);
+    }
+
+}
+
+function requestTripInfo() {
+    var txn = genMsgObj(websocket_app_msg_id_list.REQUEST_TRIP_INFO);
+    console.log(txn);
+    if(txn != null){
+        let jsonMsg = JSON.stringify(txn);
+        console.log(jsonMsg);
+
+        publish(txn);
+    }
+
+}
+
+function requestBusStopInfo() {
+    var txn = genMsgObj(websocket_app_msg_id_list.REQUEST_BUSSTOP_INFO);
     console.log(txn);
     if(txn != null){
         let jsonMsg = JSON.stringify(txn);

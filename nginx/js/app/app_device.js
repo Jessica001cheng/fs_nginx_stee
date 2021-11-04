@@ -13,6 +13,15 @@ let g_devConfig = [
 
 let g_devSel = null;
 
+$(function () {
+    gaugeObj = new JustGage({
+        id: "gauge",
+        titleFontColor: "white",
+        valueFontColor: "white",
+        defaults: gaugeSpeedDef
+    });
+})
+
 function onDeviceSelected(event) {
     switch(this.options[this.selectedIndex].text) {
         case "G01":

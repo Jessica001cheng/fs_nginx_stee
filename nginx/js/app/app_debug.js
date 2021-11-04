@@ -60,16 +60,18 @@ function setDefault() {
     deviceSelect("G01");
     
     //Sets some stuff to some defaults to improve user experience. Triggered onload.
-    document.getElementById("doorStatus").innerText = "n/a";
-    document.getElementById("stopID").innerText = "Please wait...";
-    document.getElementById("cepasBoard").innerText = 0;
-    document.getElementById("cepasAlight").innerText = 0;
-    document.getElementById("concessionBoard").innerText = 0;
-    document.getElementById("concessionAlight").innerText = 0;
-    document.getElementById("cashBoard").innerText = 0;
-    document.getElementById("tripID").innerText = "n/a";
-    document.getElementById("dirID").innerText = "n/a"; 
-    document.getElementById("busID").innerText = "n/a";
-    document.getElementById("dirID").innerText = "n/a";
-    document.getElementById("shiftID").innerText = "n/a";
+
+    document.getElementById("currentdate").innerText = "n/a";
+    document.getElementById("currenttime").innerText = "n/a";
+    document.getElementById("service number").innerText = "14";
+    document.getElementById("bus plate").innerText = "SBS3008";
+    document.getElementById("spid").innerText = "16:SBST";
+
+    document.getElementById("directory").innerText = "1";
+    document.getElementById("distance").innerText = "0";
+
+}
+
+window.onload = function(){
+    setDefault();
 }
