@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <title>Device Log In GUI</title>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+
+        <!-- CSS -->
+        <script type="text/javascript" src="js/jquery/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="css/darkly/bootstrap.css" />
+        <link type="text/css" rel="stylesheet" href="css/app/app.css" />
+
+        <!-- Javascript -->
+        <script type="text/javascript" src="js/paho/mqttws31.js"></script>
+        <script type="text/javascript" src="js/app/app_mqtt_client.js"></script>
+        <script type="text/javascript" src="js/app/app_send_message.js"></script>
+        <script src="js/raphael-2.1.4.min.js"></script>
+</head>
+
+
+<body>
+  <main id="main-holder">
+    <h1 id="login-welcome">Welcome</h1>
+    <h1 id="login-header">Please tap your Log In Card</h1>
+    
+    <div id="login-error" visible=false>
+      <p id="login-error-msg" visible=false>Invalid username <span id="error-msg-second-line">and/or password</span></p>
+    </div>
+    <div id="login-correct" visible=false>
+      <p id="login-correct-msg" visible=false>Please wait, redirect you to on trip page</p>
+    </div>
+    
+  
+  </main>
+</body>
+
+</html>
