@@ -1,7 +1,7 @@
 // Get the hostname, assume mqtt broker and web server are in the same host
 var base_url = window.location.host; //Jessica comment for test
-console.log("mqtt url: " + base_url);
 //var base_url = "10.8.0.7";
+console.log("mqtt url: " + base_url);
 var pathArray = base_url.split(':');
 var base_host = pathArray[0];
 
@@ -83,12 +83,6 @@ function changeStatus(statusName, ledFile) {
     // A small function that swaps the LED statuses.
 }
 
-//sets the epoch time on the UI.
-//var intervalTimer = window.setInterval(function(){
-//    epoch = new Date().toLocaleString().replace(',', '');
-    
-//    document.getElementById('startprofileTime').value = epoch;
-//  }, 0);
 
 function onMessageArrived(message) {
     // Debug - Print arrival of message to console
@@ -607,22 +601,24 @@ function handleTripManagerData(msg) {
     else if(msg_id === websocket_app_msg_id_list.REQUEST_TRIP_INFO)
     {
         document.getElementById("service number").innerHTML =  msg.payload.service_number;
-        document.getElementById("bus plate").innerHTML =  msg.payload.busPlate;
+        document.getElementById("bus plate").innerHTML =  msg.payload.bus_plate;
         document.getElementById("spid").innerHTML =  msg.payload.spid;
         document.getElementById("direction").innerHTML =  msg.payload.direction;
     }
     else if(msg_id === websocket_app_msg_id_list.REQUEST_BUSSTOP_INFO)
-    {
+    { 
+        document.getElementById("distance travalled").innerHTML =  msg.payload.current_stop_info.distanceTravelled;
+
         document.getElementById("current stop ID").innerHTML =  msg.payload.current_stop_info.busStopID;
         document.getElementById("current stop name").innerHTML =  msg.payload.current_stop_info.busStopName;
         //document.getElementById("current stop expected time").innerHTML =  msg.payload.current_stop_info.busStopID;
 
-        document.getElementById("next stop ID").innerHTML =  msg.payload.current_stop_info.busStopID;
-        document.getElementById("next stop name").innerHTML =  msg.payload.current_stop_info.busStopName;
+        document.getElementById("next stop ID").innerHTML =  msg.payload.next_stop_info.busStopID;
+        document.getElementById("next stop name").innerHTML =  msg.payload.next_stop_info.busStopName;
         //document.getElementById("next stop expected time").innerHTML =  msg.payload.current_stop_info.busStopID;
 
-        document.getElementById("next next stop ID").innerHTML =  msg.payload.current_stop_info.busStopID;
-        document.getElementById("next next stop name").innerHTML =  msg.payload.current_stop_info.busStopName;
+        document.getElementById("next next stop ID").innerHTML =  msg.payload.next_next_stop_info.busStopID;
+        document.getElementById("next next stop name").innerHTML =  msg.payload.next_next_stop_info.busStopName;
         //document.getElementById("next next stop expected time").innerHTML =  msg.payload.current_stop_info.busStopID;
 
         document.getElementById("destination stop ID").innerHTML =  msg.payload.destination_stop_info.busStopID;

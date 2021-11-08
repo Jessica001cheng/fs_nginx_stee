@@ -60,18 +60,35 @@ function setDefault() {
     deviceSelect("G01");
     
     //Sets some stuff to some defaults to improve user experience. Triggered onload.
-
-    document.getElementById("currentdate").innerText = "n/a";
-    document.getElementById("currenttime").innerText = "n/a";
-    document.getElementById("service number").innerText = "14";
+    var curDate= new Date();
+    date = curDate.toLocaleDateString().replace(',', '');
+    time = curDate.toLocaleTimeString('it-IT');
+    console.log("setDefault: " + date + time);
+    document.getElementById("currentdate").innerText = date;
+    document.getElementById("currenttime").innerText = time;
+    document.getElementById("service number").innerText = "85";
     document.getElementById("bus plate").innerText = "SBS3008";
     document.getElementById("spid").innerText = "16:SBST";
 
-    document.getElementById("directory").innerText = "1";
-    document.getElementById("distance").innerText = "0";
+    document.getElementById("direction").innerHTML = "1";
+    document.getElementById("distance travalled").innerHTML = "0";
 
 }
 
+//sets the epoch time on the UI.
+function updateClock(){
+    setInterval(myinterval, 1000);
+}
+function myinterval(){
+    var curDate= new Date();
+    date = curDate.toLocaleDateString().replace(',', '');
+    time = curDate.toLocaleTimeString('it-IT');
+    //console.log("!!!intervalTimer: " + date + time);
+    document.getElementById('currentdate').innerHTML = date;
+    document.getElementById('currenttime').innerHTML = time;
+  }
+
 window.onload = function(){
     setDefault();
+    updateClock();
 }

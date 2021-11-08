@@ -1,7 +1,9 @@
 const websocket_app_msg_id_list = {
                                         NO_RPLY: "NO_PAYLOAD_REPLY",
                                         REQUEST_TRIP_INFO: "REQUEST_TRIP_INFO",
-                                        REQUEST_BUSSTOP_INFO: "REQUEST_BUSSTOP_INFO"
+                                        REQUEST_BUSSTOP_INFO: "REQUEST_BUSSTOP_INFO",
+                                        REQUEST_UPSTAGE: "REQUEST_UPSTAGE",
+                                        REQUEST_DOWNSTAGE: "REQUEST_DOWNSTAGE",
                                     }
 
 function seconds_since_epoch(d) { 
@@ -51,6 +53,28 @@ function requestBusStopInfo() {
 
 }
 
+function requestupdstage() {
+    var txn = genMsgObj(websocket_app_msg_id_list.REQUEST_UPSTAGE);
+    console.log(txn);
+    if(txn != null){
+        let jsonMsg = JSON.stringify(txn);
+        console.log(jsonMsg);
+
+        publish(txn);
+    }
+
+}
+function requestdownstage() {
+    var txn = genMsgObj(websocket_app_msg_id_list.REQUEST_DOWNSTAGE);
+    console.log(txn);
+    if(txn != null){
+        let jsonMsg = JSON.stringify(txn);
+        console.log(jsonMsg);
+
+        publish(txn);
+    }
+
+}
 
 function genMsgObj(msg_id) {
     var d = Date.now();
